@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#050507" />
+  <title>Мини-панель поиска изображений</title>
+
+  <!-- Tailwind is loaded from CDN so the file works without a build step. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Google Sans"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif']
+          },
+          colors: {
+            glass: 'rgba(18, 18, 24, 0.72)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Visual dim layer behind the floating panel. It stays non-interactive so
+       touches can still reach the app underneath in an overlay window. -->
+  <div id="backdrop" class="backdrop" aria-hidden="true"></div>
+
+  <!-- The compact floating window itself. It is intentionally not full screen. -->
+  <main id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="panelTitle" aria-hidden="false">
+    <header id="dragHandle" class="panel-header" aria-label="Перетащите окно за эту область">
+      <span class="header-grip" aria-hidden="true"></span>
+
+      <div class="search-row">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10.5 3a7.5 7.5 0 0 1 5.93 12.09l4.24 4.24a1 1 0 0 1-1.42 1.42l-4.24-4.24A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11a5.5 5.5 0 0 0 0-11Z" />
+          </svg>
+
+          <input
+            id="searchInput"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Найти изображения"
+            aria-label="Поиск изображений"
+            autofocus
+          />
+
+          <button id="clearButton" class="icon-btn clear-btn" type="button" aria-label="Очистить поиск" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6.7 5.3a1 1 0 0 0-1.4 1.4L10.6 12l-5.3 5.3a1 1 0 1 0 1.4 1.4L12 13.4l5.3 5.3a1 1 0 0 0 1.4-1.4L13.4 12l5.3-5.3a1 1 0 0 0-1.4-1.4L12 10.6 6.7 5.3Z" />
+            </svg>
+          </button>
+        </div>
+
+        <button id="closeButton" class="icon-btn close-btn" type="button" aria-label="Закрыть панель">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.7 5.3a1 1 0 0 0-1.4 1.4L10.6 12l-5.3 5.3a1 1 0 1 0 1.4 1.4L12 13.4l5.3 5.3a1 1 0 0 0 1.4-1.4L13.4 12l5.3-5.3a1 1 0 0 0-1.4-1.4L12 10.6 6.7 5.3Z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="chips-section" aria-label="Фильтры">
+      <div id="chips" class="chips-scroll" role="tablist"></div>
+    </section>
+
+    <section class="results-section" aria-live="polite">
+      <div id="status" class="status" hidden></div>
+
+      <div id="skeletons" class="image-grid" hidden aria-hidden="true">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+
+      <div id="grid" class="image-grid"></div>
+    </section>
+
+    <footer class="panel-footer">
+      <span id="panelTitle" class="footer-hint">Перетащите окно за шапку</span>
+    </footer>
+  </main>
+
+  <!-- Small launcher shown after the panel is closed in a browser preview. -->
+  <button id="reopenButton" class="reopen-btn" type="button" hidden aria-label="Открыть панель">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M10.5 3a7.5 7.5 0 0 1 5.93 12.09l4.24 4.24a1 1 0 0 1-1.42 1.42l-4.24-4.24A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11a5.5 5.5 0 0 0 0-11Z" />
+    </svg>
+  </button>
+
+  <div id="toast" class="toast" role="status" aria-live="assertive" aria-atomic="true"></div>
+
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
