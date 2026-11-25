@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Мини-панель</string>
+    <string name="search_hint">Найти изображения</string>
+    <string name="copied">Скопировано в буфер</string>
+    <string name="link_copied">Ссылка скопирована</string>
+    <string name="copy_failed">Не удалось скопировать</string>
+    <string name="nothing_found">Ничего не найдено.</string>
+    <string name="try_another">Попробуйте другой запрос, тег или фильтр.</string>
+    <string name="show_all">Показать всё</string>
+    <string name="unsplash_unavailable">Unsplash недоступен, показаны локальные результаты</string>
+    <string name="previous_results">Не удалось обновить результаты. Показаны предыдущие.</string>
+    <string name="settings">Настройки</string>
+    <string name="api_key">Ключ Unsplash API</string>
+    <string name="save">Сохранить</string>
+    <string name="close">Закрыть</string>
+</resources>
